@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Pusher</title>
+</head>
+<button></button>
+<body>
+    <script src="notify.js"></script>
+    <script>
+(() => {
+  const b = document.querySelector("button");
+  const setReg = () => {
+    b.textContent = "subscribe";
+    b.onclick = () => {
+      subscribePush("https://localhost:8080/push")
+        .then(setUnreg).catch(setReg);
+    };
+  };
+  const setUnreg = () => {
+    b.textContent = "unsubscribe";
+    b.onclick = () => {
+      unsubscribePush("https://localhost:8080/push")
+        .then(setReg).catch(setUnreg);
+    };
+  };
+  setUpPush("sw.js").then(b => { b ? setUnReg() : setReg(); }).catch(setUnreg);
+})();
+    </script>
+</body>
+
+</html>

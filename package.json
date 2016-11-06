@@ -1,0 +1,23 @@
+{
+  "name": "pusher",
+  "version": "1.0.0",
+  "description": "simple push notifications for the web",
+  "main": "server/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fiji-flo/pusher.git"
+  },
+  "author": "fiji-flo <flomerz@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fiji-flo/pusher/issues"
+  },
+  "homepage": "https://github.com/fiji-flo/pusher#readme",
+  "dependencies": {
+    "express": "^4.14.0",
+    "web-push": "^3.1.0"
+  }
+}
