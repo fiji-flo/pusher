@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Pusher</title>
+    <link rel="manifest" href="/manifest.json">
 </head>
 <button></button>
 <body>
@@ -14,14 +15,14 @@
   const setReg = () => {
     b.textContent = "subscribe";
     b.onclick = () => {
-      subscribePush("https://localhost:8080/push")
+      subscribePush("/push")
         .then(setUnreg).catch(setReg);
     };
   };
   const setUnreg = () => {
     b.textContent = "unsubscribe";
     b.onclick = () => {
-      unsubscribePush("https://localhost:8080/push")
+      unsubscribePush("push")
         .then(setReg).catch(setUnreg);
     };
   };

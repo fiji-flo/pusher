@@ -4,9 +4,9 @@ self.addEventListener('push', function (event) {
 });
 
 function fireNotification(obj, event) {
-  const title = 'Yay \\o/';
-  const body =  `something meaningful`;
-  const icon = 'push-icon.png';
+  const title = obj.title;
+  const body =  obj.body;
+  const icon = 'images/pusher-icon-192.png';
   const tag = 'push';
 
   event.waitUntil(self.registration.showNotification(title, {
