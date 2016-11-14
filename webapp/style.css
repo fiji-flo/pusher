@@ -15,9 +15,9 @@ button {
     background-color: #663399;
     border: none;
     color: white;
-    padding: 10vmin 20vmin;
+    padding: 5vmin 15vmin;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 15vmin;
+    font-size: 10vmin;
 }
