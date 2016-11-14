@@ -17,7 +17,7 @@ function subscribePush(url, payload) {
       if (!subscription) {
         return reg.pushManager.subscribe({ userVisibleOnly: true })
           .then(subscription => {
-            postSubscribeObj(url, subscription, "subscribe", payload);
+            return postSubscribeObj(url, subscription, "subscribe", payload);
           });
       } else {
         return Promise.resolve();
@@ -45,10 +45,17 @@ function postSubscribeObj(url, subscription, statusType, payload = {}) {
   request.open("POST", url);
   request.setRequestHeader("Content-Type", "application/json");
 
-  var subscribeObj = {
+  const subscribeObj = {
     statusType: statusType,
     subscription: subscription,
     data: payload,
   }
+  const p = new Promise((resolve, reject) => {
+    request.onload = () => request.status >= 200 && request.status <= 300 ?
+      resolve() : reject();
+    request.onerror = reject
+  });
+
   request.send(JSON.stringify(subscribeObj));
+  return p;
 }
