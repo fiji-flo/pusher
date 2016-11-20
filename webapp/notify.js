@@ -18,7 +18,7 @@ function subscribePush(url, payload, key) {
       if (!subscription) {
         return reg.pushManager.subscribe({
           userVisibleOnly: true,
-          applicationServerKey: TextEncoder.encode(key)
+          applicationServerKey: (new TextEncoder()).encode(key)
         }).then(subscription => {
           return postSubscribeObj(url, subscription, 'subscribe', payload);
         });
