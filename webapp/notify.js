@@ -1,4 +1,12 @@
 'use strict';
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding)
+    .replace(/\-/g, '+')
+    .replace(/_/g, '/');
+  return (new TextEncoder()).encode(window.atob(base64));
+}
+
 function setUpPush(worker = 'sw.js') {
   Notification.requestPermission();
   if ('serviceWorker' in navigator) {
@@ -18,7 +26,7 @@ function subscribePush(url, payload, key) {
       if (!subscription) {
         return reg.pushManager.subscribe({
           userVisibleOnly: true,
-          applicationServerKey: (new TextEncoder()).encode(key)
+          applicationServerKey: urlBase64ToUint8Array(key)
         }).then(subscription => {
           return postSubscribeObj(url, subscription, 'subscribe', payload);
         });
