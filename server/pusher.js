@@ -67,11 +67,6 @@ function pushHandler(request, response) {
     deleteSubscriber(subscriber);
     break;
   }
-
-  response.writeHead(200, {
-    'Content-Type': 'application/json',
-  });
-
   response.end();
 }
 
