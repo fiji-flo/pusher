@@ -13,7 +13,8 @@
     <script>
 (() => {
   const b = document.querySelector("button");
-  const setReg = () => {
+  const setReg = (e) => {
+    e && console.log(e);
     console.log("subscribe");
     b.textContent = "subscribe";
     b.onclick = () => {
@@ -21,7 +22,8 @@
         .then(setUnreg).catch(setReg);
     };
   };
-  const setUnreg = () => {
+  const setUnreg = (e) => {
+    e && console.log(e);
     console.log("unsubscribe");
     b.textContent = "unsubscribe";
     b.onclick = () => {
