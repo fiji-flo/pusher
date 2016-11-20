@@ -1,13 +1,19 @@
-const webPush = require("web-push");
+'use strict';
+const webPush = require('web-push');
 const sqlite3 = require('sqlite3');
+const jsonfile = require('jsonfile');
 
-const DB_FILE = "subscriptions.sqlite3";
+const DB_FILE = 'subscriptions.sqlite3';
+const VAPID_FILE = 'vapid.json';
 const subscribers = new Map();
+
+const vapidInfo = jsonfile.readFileSync(VAPID_FILE);
+webPush.setVapidDetails(vapidInfo.email, vapidInfo.publicKey, vapidInfo.privateKey);
 
 const db = new sqlite3.Database(DB_FILE);
 function initDB() {
-  db.run("CREATE TABLE IF NOT EXISTS subscribers (subs TEXT, CONSTRAINT uni UNIQUE (subs))");
-  db.all("SELECT * FROM subscribers", (err, rows=[]) => {
+  db.run('CREATE TABLE IF NOT EXISTS subscribers (subs TEXT, CONSTRAINT uni UNIQUE (subs))');
+  db.all('SELECT * FROM subscribers', (err, rows=[]) => {
     for (let row of rows) {
       const subscriber = JSON.parse(row.subs);
       console.log(`restored ${subscriber.subscription.endpoint}`);
@@ -47,23 +53,23 @@ function notifier() {
 }
 
 function pushHandler(request, response) {
-  let body = "";
+  let body = '';
 
-  request.on("data", function (chunk) {
+  request.on('data', function (chunk) {
     body += chunk;
   });
 
-  request.on("end", function () {
+  request.on('end', function () {
     if (!body) return;
     const obj = JSON.parse(body);
     const subscriber =  { subscription: obj.subscription, data: obj.data };
-    console.log("POSTed: " + obj.statusType);
+    console.log('POSTed: ' + obj.statusType);
     switch (obj.statusType) {
-    case "subscribe":
+    case 'subscribe':
       console.log(`new subscriber: ${subscriber.subscription.endpoint}`);
       addSubscriber(subscriber);
       break;
-    case "unsubscribe":
+    case 'unsubscribe':
       console.log(`lost subscriber: ${subscriber.subscription.endpoint}`);
       deleteSubscriber(subscriber);
       break;
@@ -71,7 +77,7 @@ function pushHandler(request, response) {
   });
 
   response.writeHead(200, {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   });
 
   response.end();

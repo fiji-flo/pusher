@@ -14,6 +14,7 @@
 (() => {
   const b = document.querySelector("button");
   const setReg = () => {
+    console.log("subscribe");
     b.textContent = "subscribe";
     b.onclick = () => {
       subscribePush("/push")
@@ -21,6 +22,7 @@
     };
   };
   const setUnreg = () => {
+    console.log("unsubscribe");
     b.textContent = "unsubscribe";
     b.onclick = () => {
       unsubscribePush("push")
