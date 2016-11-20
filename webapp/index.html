@@ -2,36 +2,37 @@
 <html>
 
 <head>
-    <meta charset="utf-8" />
+    <meta charset='utf-8' />
     <title>Pusher</title>
-    <link rel="manifest" href="/manifest.json">
-    <link rel="stylesheet"href="style.css">
+    <link rel='manifest' href='/manifest.json'>
+    <link rel='stylesheet'href='style.css'>
 </head>
 <body>
     <button></button>
-    <script src="notify.js"></script>
+    <script src='notify.js'></script>
     <script>
 (() => {
-  const b = document.querySelector("button");
+  const vapidKey = '';
+  const b = document.querySelector('button');
   const setReg = (e) => {
     e && console.log(e);
-    console.log("subscribe");
-    b.textContent = "subscribe";
+    console.log('subscribe');
+    b.textContent = 'subscribe';
     b.onclick = () => {
-      subscribePush("/push")
+      subscribePush('/push', {}, vapidKey)
         .then(setUnreg).catch(setReg);
     };
   };
   const setUnreg = (e) => {
     e && console.log(e);
-    console.log("unsubscribe");
-    b.textContent = "unsubscribe";
+    console.log('unsubscribe');
+    b.textContent = 'unsubscribe';
     b.onclick = () => {
-      unsubscribePush("push")
+      unsubscribePush('push')
         .then(setReg).catch(setUnreg);
     };
   };
-  setUpPush("sw.js").then(b => { b ? setUnReg() : setReg(); }).catch(setUnreg);
+  setUpPush('sw.js').then(b => { b ? setUnReg() : setReg(); }).catch(setUnreg);
 })();
     </script>
 </body>
