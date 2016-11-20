@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/fiji-flo/pusher#readme",
   "dependencies": {
+    "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "jsonfile": "^2.4.0",
     "sqlite3": "^3.1.8",

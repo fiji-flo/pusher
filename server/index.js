@@ -4,11 +4,13 @@ const http = require('http');
 const express = require('express');
 const pusher = require('./pusher.js');
 const fs = require('fs');
+const bodyParser = require('body-parser');
 
 const PORT = 8080;
 
 const app = express();
 app.use(express.static('../webapp'));
+app.use(bodyParser.json());
 
 app.post('/push', pusher.pushHandler);
 

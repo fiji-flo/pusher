@@ -52,29 +52,21 @@ function notifier() {
   }
 }
 
+// relies on body-parser
 function pushHandler(request, response) {
-  let body = '';
-
-  request.on('data', function (chunk) {
-    body += chunk;
-  });
-
-  request.on('end', function () {
-    if (!body) return;
-    const obj = JSON.parse(body);
-    const subscriber =  { subscription: obj.subscription, data: obj.data };
-    console.log('POSTed: ' + obj.statusType);
-    switch (obj.statusType) {
-    case 'subscribe':
-      console.log(`new subscriber: ${subscriber.subscription.endpoint}`);
-      addSubscriber(subscriber);
-      break;
-    case 'unsubscribe':
-      console.log(`lost subscriber: ${subscriber.subscription.endpoint}`);
-      deleteSubscriber(subscriber);
-      break;
-    }
-  });
+  const obj = request.body;
+  const subscriber =  { subscription: obj.subscription, data: obj.data };
+  console.log('POSTed: ' + obj.statusType);
+  switch (obj.statusType) {
+  case 'subscribe':
+    console.log(`new subscriber: ${subscriber.subscription.endpoint}`);
+    addSubscriber(subscriber);
+    break;
+  case 'unsubscribe':
+    console.log(`lost subscriber: ${subscriber.subscription.endpoint}`);
+    deleteSubscriber(subscriber);
+    break;
+  }
 
   response.writeHead(200, {
     'Content-Type': 'application/json',
