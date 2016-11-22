@@ -21,7 +21,11 @@
     <script>
 (() => {
   const $ = s => document.querySelector(s);
-  flatpickr(".flatpickr", {enableTime: true});
+  let date = new Date();
+  flatpickr(".flatpickr", {
+    enableTime: true,
+    onChange: (dates) => { date = dates[0] || date; }
+  });
   const vapidKey = '';
   const b = $('#subscription');
   const setReg = (e) => {
@@ -47,7 +51,7 @@
     remind('/push', {
       title: $('#title').value,
       body: $('#body').value,
-      ts: (new Date($('.flatpickr').value)).getTime()
+      ts: date.getTime()
     });
   };
 
