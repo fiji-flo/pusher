@@ -10,7 +10,20 @@ body {
     min-height: 100%;
 }
 
+textarea {
+    width: 80%;
+    height: 20vmin;
+    font-size: 5vmin;
+}
+
+input {
+    width: 20%;
+    height: 5vmin;
+    font-size: 5vmin;
+}
+
 button {
+    margin: .5vmin .5vmin;
     align-self: center;
     background-color: #663399;
     border: none;

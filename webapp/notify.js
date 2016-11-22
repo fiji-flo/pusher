@@ -56,6 +56,14 @@ function unsubscribePush(url) {
   });
 }
 
+function remind(url, payload) {
+  return navigator.serviceWorker.ready.then(reg => {
+    return reg.pushManager.getSubscription().then(subscription => {
+      return postSubscribeObj(url, subscription, 'remind', payload);
+    });
+  });
+}
+
 function postSubscribeObj(url, subscription, statusType, payload = {}) {
   const request = new XMLHttpRequest();
 

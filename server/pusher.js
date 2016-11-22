@@ -1,18 +1,23 @@
 'use strict';
+const fs = require('fs');
 const webPush = require('web-push');
 const sqlite3 = require('sqlite3');
 const jsonfile = require('jsonfile');
+const cronie = require('./cronie.js')
 
 const DB_FILE = 'subscriptions.sqlite3';
 const VAPID_FILE = 'vapid.json';
 const subscribers = new Map();
 
-const vapidInfo = jsonfile.readFileSync(VAPID_FILE);
-webPush.setVapidDetails(vapidInfo.email, vapidInfo.publicKey, vapidInfo.privateKey);
+if (fs.existsSync(VAPID_FILE)) {
+  const vapidInfo = jsonfile.readFileSync(VAPID_FILE);
+  webPush.setVapidDetails(vapidInfo.email, vapidInfo.publicKey, vapidInfo.privateKey);
+}
 
 const db = new sqlite3.Database(DB_FILE);
 function initDB() {
   db.run('CREATE TABLE IF NOT EXISTS subscribers (subs TEXT, CONSTRAINT uni UNIQUE (subs))');
+  db.run('CREATE TABLE IF NOT EXISTS reminders (endpoint TEXT, reminder TEXT)');
   db.all('SELECT * FROM subscribers', (err, rows=[]) => {
     for (let row of rows) {
       const subscriber = JSON.parse(row.subs);
@@ -24,8 +29,11 @@ function initDB() {
 
 initDB();
 
-function addNotifier(subscriber) {
-
+function addReminder(subscriber, reminder) {
+  const endpointStr = JSON.stringify(subscriber.subscription.endpoint);
+  const reminderStr = JSON.stringify(reminder);
+  const sql = `INSERT INTO reminders VALUES ('${endpointStr}', '${reminderStr}')`;
+  cronie.add(reminder.ts, () => notify(subscriber, reminder))
 }
 
 function addSubscriber(subscriber) {
@@ -42,20 +50,18 @@ function deleteSubscriber(subscriber) {
   subscribers.delete(subscriber.subscription.endpoint);
 }
 
-function notifier() {
-  for (let sub of subscribers.values()) {
-    console.log(`pushing to ${JSON.stringify(sub.subscription)} -> ${JSON.stringify(sub.data)}`)
-    webPush.sendNotification(sub.subscription, JSON.stringify({
-      title: `\\o/ Yay`,
-      body: `something blue!`,
-    }))
-  }
+function notify(sub, reminder) {
+  console.log(`pushing to ${JSON.stringify(sub.subscription)} -> ${JSON.stringify(reminder)}`)
+  webPush.sendNotification(sub.subscription, JSON.stringify({
+    title: reminder.title,
+    body: reminder.body,
+  }))
 }
 
 // relies on body-parser
 function pushHandler(request, response) {
   const obj = request.body;
-  const subscriber =  { subscription: obj.subscription, data: obj.data };
+  const subscriber =  { subscription: obj.subscription };
   console.log('POSTed: ' + obj.statusType);
   switch (obj.statusType) {
   case 'subscribe':
@@ -66,11 +72,11 @@ function pushHandler(request, response) {
     console.log(`lost subscriber: ${subscriber.subscription.endpoint}`);
     deleteSubscriber(subscriber);
     break;
+  case 'remind':
+    console.log(`new reminder for: ${subscriber.subscription.endpoint}`);
+    addReminder(subscriber, obj.data);
   }
   response.end();
 }
-
-
-setInterval(notifier, 10000);
 
 module.exports.pushHandler = pushHandler;

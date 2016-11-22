@@ -6,14 +6,20 @@
     <title>Pusher</title>
     <link rel='manifest' href='/manifest.json'>
     <link rel='stylesheet'href='style.css'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/flatpickr/2.1.1/flatpickr.min.css'>
 </head>
 <body>
-    <button></button>
+    <textarea placeholder="remind me of …"></textarea>
+    <input class="flatpickr" type="text" placeholder="Select Date..">
+    <button class="reminder">remind me</button>
+    <button class="subsciption"></button>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/2.1.1/flatpickr.min.js"></script>
     <script src='notify.js'></script>
     <script>
 (() => {
+  flatpickr(".flatpickr", {enableTime: true});
   const vapidKey = '';
-  const b = document.querySelector('button');
+  const b = document.querySelector('.subsciption');
   const setReg = (e) => {
     e && console.log(e);
     console.log('subscribe');
@@ -28,10 +34,19 @@
     console.log('unsubscribe');
     b.textContent = 'unsubscribe';
     b.onclick = () => {
-      unsubscribePush('push')
+      unsubscribePush('/push')
         .then(setReg).catch(setUnreg);
     };
   };
+  const r = document.querySelector('.reminder');
+  r.onclick = () => {
+    remind('/push', {
+      title: 'foo',
+      body: 'FOOBAR',
+      date: Math.floor((new Date(document.querySelector('.flatpickr').value)).getTime() / 1000)
+    });
+  };
+
   setUpPush('sw.js').then(b => { b ? setUnReg() : setReg(); }).catch(setUnreg);
 })();
     </script>
