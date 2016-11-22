@@ -27,7 +27,7 @@
   const setReg = (e) => {
     e && console.log(e);
     console.log('subscribe');
-    b.classList.remove'checked');
+    b.classList.remove('checked');
     b.onclick = () => {
       subscribePush('/push', {}, vapidKey)
         .then(setUnreg).catch(setReg);
