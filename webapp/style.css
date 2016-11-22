@@ -67,15 +67,12 @@ button {
   transition: .4s;
 }
 
-input:checked + .slider {
+.checked.slider {
   background-color: #663399;
 }
 
-input:focus + .slider {
-  box-shadow: 0 0 .5vmin #663399;
-}
 
-input:checked + .slider:before {
+.checked.slider:before {
   transform: translateX(13vmin);
 }
 

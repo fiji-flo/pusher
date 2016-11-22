@@ -9,12 +9,11 @@
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/flatpickr/2.1.1/flatpickr.min.css'>
 </head>
 <body>
-    <input class="title" placeholder="title">
-    <textarea placeholder="remind me of …"></textarea>
+    <input id="title" placeholder="title">
+    <textarea id="body" placeholder="remind me of …"></textarea>
     <input class="flatpickr" type="text" placeholder="Select Date..">
     <button class="reminder">remind me</button>
     <label class="switch">
-      <input id="status" type="checkbox">
       <div id="subscription" class="slider round"></div>
     </label>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/2.1.1/flatpickr.min.js"></script>
@@ -25,11 +24,10 @@
   flatpickr(".flatpickr", {enableTime: true});
   const vapidKey = '';
   const b = $('#subscription');
-  const s = $('#status');
   const setReg = (e) => {
     e && console.log(e);
     console.log('subscribe');
-    s.checked = false;
+    b.classList.remove'checked');
     b.onclick = () => {
       subscribePush('/push', {}, vapidKey)
         .then(setUnreg).catch(setReg);
@@ -38,7 +36,7 @@
   const setUnreg = (e) => {
     e && console.log(e);
     console.log('unsubscribe');
-    s.checked = true;
+    b.classList.add('checked');
     b.onclick = () => {
       unsubscribePush('/push')
         .then(setReg).catch(setUnreg);
@@ -47,8 +45,8 @@
   const r = $('.reminder');
   r.onclick = () => {
     remind('/push', {
-      title: $('.title').value,
-      body: $('.body').value,
+      title: $('#title').value,
+      body: $('#body').value,
       ts: (new Date($('.flatpickr').value)).getTime()
     });
   };
