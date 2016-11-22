@@ -22,8 +22,8 @@
 (() => {
   const $ = s => document.querySelector(s);
   let date = new Date();
-  flatpickr(".flatpickr", {
-    enableTime: true,
+  flatpickr('.flatpickr', {enableTime: true});
+  $('.flatpickr').flatpickr({
     onChange: (dates) => { date = dates[0] || date; }
   });
   const vapidKey = '';
