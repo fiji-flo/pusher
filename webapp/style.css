@@ -8,6 +8,7 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100%;
+    max-width: 100vmin;
 }
 
 textarea {
@@ -17,7 +18,7 @@ textarea {
 }
 
 input {
-    width: 20%;
+    width: 80%;
     height: 5vmin;
     font-size: 5vmin;
 }
@@ -33,4 +34,55 @@ button {
     text-decoration: none;
     display: inline-block;
     font-size: 10vmin;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 30vmin;
+  height: 17vmin;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 13vmin;
+  width: 13vmin;
+  left: 2vmin;
+  bottom: 2vmin;
+  background-color: white;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #663399;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 .5vmin #663399;
+}
+
+input:checked + .slider:before {
+  transform: translateX(13vmin);
+}
+
+.slider.round {
+  border-radius: 17vmin;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }
