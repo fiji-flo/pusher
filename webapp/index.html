@@ -6,26 +6,21 @@
     <title>Pusher</title>
     <link rel='manifest' href='/manifest.json'>
     <link rel='stylesheet'href='style.css'>
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/flatpickr/2.1.1/flatpickr.min.css'>
 </head>
 <body>
     <input id="title" placeholder="title">
     <textarea id="body" placeholder="remind me of …"></textarea>
-    <input class="flatpickr" type="text" placeholder="Select Date..">
+    <input id="ts" type="datetime-local" placeholder="Select Date..">
     <button class="reminder">remind me</button>
     <label class="switch">
       <div id="subscription" class="slider round"></div>
     </label>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/2.1.1/flatpickr.min.js"></script>
     <script src='notify.js'></script>
     <script>
 (() => {
   const $ = s => document.querySelector(s);
-  let date = new Date();
-  flatpickr('.flatpickr', {
-    enableTime: true,
-    onChange: (dates) => { date = dates[0] || date; }
-  });
+  const ts = $('#ts');
+  const utcOffset = (new Date()).getTimezoneOffset * 60000;
   const vapidKey = '';
   const b = $('#subscription');
   const setReg = (e) => {
@@ -51,7 +46,7 @@
     remind('/push', {
       title: $('#title').value,
       body: $('#body').value,
-      ts: date.getTime()
+      ts: (new Date($('#ts').value)).getTime() + utcOffset;
     });
   };
 
