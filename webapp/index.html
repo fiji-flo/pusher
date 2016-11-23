@@ -20,7 +20,7 @@
 (() => {
   const $ = s => document.querySelector(s);
   const ts = $('#ts');
-  const utcOffset = (new Date()).getTimezoneOffset * 60000;
+  const utcOffset = (new Date()).getTimezoneOffset() * 60000;
   const vapidKey = '';
   const b = $('#subscription');
   const setReg = (e) => {
