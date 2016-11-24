@@ -34,6 +34,36 @@ button {
     text-decoration: none;
     display: inline-block;
     font-size: 10vmin;
+    transition-duration: 0.4s;
+    overflow: hidden;
+    cursor: pointer;
+    width: 80%;
+    position: relative;
+}
+
+button:after {
+    content: "";
+    background: #9966CC;
+    display: block;
+    position: absolute;
+    padding-top: 300%;
+    padding-left: 350%;
+    margin-left: -15vmin!important;
+    margin-top: -120%;
+    opacity: 0;
+    transition: all 0.8s
+}
+
+button:active:after {
+    padding: 0;
+    margin: 0;
+    opacity: 1;
+    transition: 0s
+}
+
+#status {
+    height: 6vmin;
+    font-size: 5vmin;
 }
 
 .switch {

@@ -2,10 +2,10 @@
 <html>
 
 <head>
-    <meta charset='utf-8' />
+    <meta charset="utf-8" />
     <title>Pusher</title>
-    <link rel='manifest' href='/manifest.json'>
-    <link rel='stylesheet'href='style.css'>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet"href="style.css">
 </head>
 <body>
     <input id="title" placeholder="title">
@@ -15,44 +15,8 @@
     <label class="switch">
       <div id="subscription" class="slider round"></div>
     </label>
-    <script src='notify.js'></script>
-    <script>
-(() => {
-  const $ = s => document.querySelector(s);
-  const ts = $('#ts');
-  const utcOffset = (new Date()).getTimezoneOffset() * 60000;
-  const vapidKey = '';
-  const b = $('#subscription');
-  const setReg = (e) => {
-    e && console.log(e);
-    console.log('subscribe');
-    b.classList.remove('checked');
-    b.onclick = () => {
-      subscribePush('/push', {}, vapidKey)
-        .then(setUnreg).catch(setReg);
-    };
-  };
-  const setUnreg = (e) => {
-    e && console.log(e);
-    console.log('unsubscribe');
-    b.classList.add('checked');
-    b.onclick = () => {
-      unsubscribePush('/push')
-        .then(setReg).catch(setUnreg);
-    };
-  };
-  const r = $('.reminder');
-  r.onclick = () => {
-    remind('/push', {
-      title: $('#title').value,
-      body: $('#body').value,
-      ts: (new Date($('#ts').value)).getTime() + utcOffset
-    });
-  };
-
-  setUpPush('sw.js').then(b => { b ? setUnReg() : setReg(); }).catch(setUnreg);
-})();
-    </script>
+    <script src="notify.js"></script>
+    <script src="index.js"></script>
 </body>
 
 </html>
