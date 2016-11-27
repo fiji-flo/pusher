@@ -25,6 +25,18 @@ function initDB() {
       subscribers.set(subscriber.subscription.endpoint, subscriber);
     }
   });
+  db.all('SELECT * FROM reminders', (err, rows=[]) => {
+    for (let row of rows) {
+      const endpoint = JSON.parse(row.endpoint);
+      const reminder = JSON.parse(row.reminder);
+      const subscriber = subscribers.get(endpoint);
+      console.log(`got ${JSON.stringify(subscriber || {})}`);
+      if (subscriber) {
+        cronie.add(reminder.ts, () => notify(subscriber, reminder))
+        console.log(`restored reminder ${JSON.stringify(reminder)} for ${endpoint}`);
+      }
+    }
+  });
 }
 
 initDB();
@@ -33,6 +45,7 @@ function addReminder(subscriber, reminder) {
   const endpointStr = JSON.stringify(subscriber.subscription.endpoint);
   const reminderStr = JSON.stringify(reminder);
   const sql = `INSERT INTO reminders VALUES ('${endpointStr}', '${reminderStr}')`;
+  db.run(sql);
   cronie.add(reminder.ts, () => notify(subscriber, reminder))
 }
 
@@ -76,6 +89,9 @@ function pushHandler(request, response) {
     console.log(`new reminder for: ${subscriber.subscription.endpoint}`);
     addReminder(subscriber, obj.data);
   }
+  response.writeHead(200, {
+    'Content-Type': 'application/json',
+  });
   response.end();
 }
 

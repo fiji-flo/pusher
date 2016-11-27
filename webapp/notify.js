@@ -17,6 +17,7 @@ function setUpPush(worker = 'sw.js') {
   Notification.requestPermission();
   if ('serviceWorker' in navigator) {
     return navigator.serviceWorker.register(worker).then(reg => {
+      reg.update();
       return reg.pushManager.getSubscription().then(subscription => {
         return subscription ? Promise.resolve(true) : Promise.resolve(false);
       });
@@ -83,4 +84,8 @@ function postSubscribeObj(url, subscription, statusType, payload = {}) {
 
   request.send(JSON.stringify(subscribeObj));
   return p;
+}
+
+function onPushMessage(f) {
+  navigator.serviceWorker.onmessage = m => f(m.data);
 }
