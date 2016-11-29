@@ -10,13 +10,13 @@ self.addEventListener('activate', evt =>
 self.addEventListener('push', evt => {
   const obj = evt.data.json();
   messageClients(obj);
-  evt.wattUntil(fireNotification(obj));
+  evt.waitUntil(fireNotification(obj));
 });
 
 self.addEventListener('fetch', evt => {
   console.log('The service worker is serving the asset.');
   evt.respondWith(fromCache(evt.request).catch(() => update(evt.request)));
-  evt.waitUntil(update(evt.request));
+  evt.waitUntil(update(evt.request.clone()));
 });
 
 function fireNotification(obj) {
