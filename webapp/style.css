@@ -13,14 +13,14 @@ body {
 
 textarea {
     width: 80%;
-    height: 20vmin;
+    height: 30vmin;
     font-size: 5vmin;
 }
 
 input {
     width: 80%;
-    height: 5vmin;
-    font-size: 5vmin;
+    height: 10vmin;
+    font-size: 10vmin;
 }
 
 button {
