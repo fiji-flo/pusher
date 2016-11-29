@@ -39,5 +39,5 @@
     }).then(sent).catch(problem);
   };
 
-  setUpPush('sw.js').then(b => { b ? setUnreg() : setReg(); }).catch(setUnreg);
+  setUp('sw.js').then(b => { b ? setUnreg() : setReg(); }).catch(setUnreg);
 })();

@@ -13,7 +13,7 @@ function urlBase64ToUint8Array(base64String) {
   return outputArray;
 }
 
-function setUpPush(worker = 'sw.js') {
+function setUp(worker = 'sw.js') {
   Notification.requestPermission();
   if ('serviceWorker' in navigator) {
     return navigator.serviceWorker.register(worker).then(reg => {
