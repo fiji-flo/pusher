@@ -1,7 +1,7 @@
 {
   "name": "pusher",
   "short_name": "pusher",
-  "start_url": "/index.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#fff",
   "description": "push notifications in a progressive web app",
@@ -31,6 +31,7 @@
     "type": "image/png"
   }],
   "related_applications": [{
-    "platform": "web"
+    "platform": "web",
+    "url": "https://pwa.fiji-flo.de/"
   }]
 }

@@ -2,6 +2,7 @@ const CACHE = 'pusher-cache';
 
 self.addEventListener('install', evt => {
   console.log('The service worker is being installed.');
+  evt.waitUntil(precache());
   evt.waitUntil(self.skipWaiting());
 });
 self.addEventListener('activate', evt =>
@@ -53,16 +54,15 @@ function messageClients(data) {
     list => list.map(client => client.postMessage(data)));
 }
 
-/*
-  function precache() {
+function precache() {
   return caches.open(CACHE).then(
-  cache => cache.addAll([
-  './index.html',
-  './style.css',
-  './index.js',
-  './notify.js',
-  './manifest.json',
-  './images/pusher-icon-192.png'
-  ]));
-  }
-*/
+    cache => cache.addAll([
+      './index.html',
+      './style.css',
+      './index.js',
+      './notify.js',
+      './manifest.json',
+      './sw.js',
+      './images/pusher-icon-192.png'
+    ]));
+}
